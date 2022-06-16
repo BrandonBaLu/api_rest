@@ -21,7 +21,7 @@ async def index():
 
 @app.get("/clientes/")
 async def clientes():
-    with sqlite3.connect('sql/clientes.sqlite') as connection:
+    with sqlite3.connect('code/sql/clientes.sqlite') as connection:
         connection.row_factory = sqlite3.Row
         cursor=connection.cursor()
         cursor.execute("SELECT * FROM clientes")
@@ -30,8 +30,8 @@ async def clientes():
         return {"message": "API REST"}
 
 @app.get("/clientes/{id}")
-async def clientes(id):
-    with sqlite3.connect('sql/clientes.sqlite') as connection:
+async def cliente(id):
+    with sqlite3.connect('code/sql/clientes.sqlite') as connection:
         connection.row_factory = sqlite3.Row
         cursor=connection.cursor()
         cursor.execute("SELECT * FROM clientes WHERE id_cliente={}".format(int(id)))
