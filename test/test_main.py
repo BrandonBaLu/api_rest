@@ -21,8 +21,9 @@ def test_clientes():
     assert response.status_code == 200
     assert response.json() == data
 
-def test_clientes():
+def test_clientes_id():
     response = clientes.get("/clientes/1") #request
     data = [{"id_cliente":1,"nombre":"Brandon","email":"patolucas.bbl@gmail.com"}]
     assert response.status_code == 200
     assert response.json() == data
+
