@@ -30,7 +30,7 @@ async def index():
 
 @app.get("/clientes/" , response_model = List[Cliente])
 async def clientes(offset:int=0, limit:int=10):
-    with sqlite3.connect('sql/clientes.sqlite') as connection:
+    with sqlite3.connect('code/sql/clientes.sqlite') as connection:
         connection.row_factory = sqlite3.Row
         cursor=connection.cursor()
         cursor.execute("SELECT * FROM clientes  LIMIT ? OFFSET ?", (limit, offset))
@@ -41,7 +41,7 @@ async def clientes(offset:int=0, limit:int=10):
 
 @app.get("/clientes/{id}")
 async def cliente(id):
-    with sqlite3.connect('sql/clientes.sqlite') as connection:
+    with sqlite3.connect('code/sql/clientes.sqlite') as connection:
         connection.row_factory = sqlite3.Row
         cursor=connection.cursor()
         cursor.execute("SELECT * FROM clientes WHERE id_cliente={}".format(int(id)))
@@ -51,18 +51,18 @@ async def cliente(id):
 
 @app.post("/clientes/", response_model=Respuesta)
 def post_cliente(cliente: ClienteIN):
-    with sqlite3.connect('sql/clientes.sqlite') as connection:
+    with sqlite3.connect('code/sql/clientes.sqlite') as connection:
         connection.row_factory = sqlite3.Row
         cursor=connection.cursor()
         cursor.execute("INSERT INTO clientes(nombre,email) VALUES(?,?)", (cliente.nombre,cliente.email))
         cursor.fetchall()
-        response = {"message":"Cliente actualizado"}
+        response = {"message":"Cliente insertado"}
         return response
 
 
 @app.put("/clientes/", response_model=Respuesta)
 async def clientes_update(nombre: str="", email:str="", id_cliente:int=0):
-    with sqlite3.connect("sql/clientes.sqlite") as connection:
+    with sqlite3.connect("code/sql/clientes.sqlite") as connection:
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
         cursor.execute("UPDATE clientes SET nombre =?, email= ? WHERE id_cliente =?;",(nombre, email, id_cliente))
@@ -71,11 +71,9 @@ async def clientes_update(nombre: str="", email:str="", id_cliente:int=0):
         return response
 
 
-
-
 @app.delete("/clientes/{id}")
 async def clientes_delete(id):
-    with sqlite3.connect('sql/clientes.sqlite') as connection:
+    with sqlite3.connect('code/sql/clientes.sqlite') as connection:
         connection.row_factory = sqlite3.Row
         cursor=connection.cursor()
         cursor.execute("DELETE FROM clientes WHERE id_cliente ={}".format(int(id)))
